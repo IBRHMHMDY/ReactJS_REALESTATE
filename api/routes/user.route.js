@@ -1,8 +1,11 @@
 import express from 'express'
-import { test } from '../controllers/user.controller.js'
+import { deleteUser, test, updateUser } from '../controllers/user.controller.js'
+import { AuthToken } from '../utils/Auth.js'
 
 const router = express.Router()
 
 router.get('/test', test)
+router.post('/update/:id', AuthToken, updateUser)
+router.delete('/delete/:id', AuthToken, deleteUser)
 
 export default router

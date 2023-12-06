@@ -7,14 +7,15 @@ import { signInSuccess } from '../redux/user/userSlice';
 export default function OAuth() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
   const handleGoogleClick = async()=>{
     try {
       const provider = new GoogleAuthProvider()
       const auth = getAuth(app);
 
       const result = await signInWithPopup(auth, provider);
-
       console.log(result);
+      console.log('****************************');
       const res = await fetch('/api/auth/google', {
         method: 'POST',
         headers: {
@@ -26,7 +27,10 @@ export default function OAuth() {
           avatar: result.user.photoURL
         })
       });
+      console.log(res);
+      console.log('****************************');
       const data = res.json();
+      console.log(data);
       dispatch(signInSuccess(data));
       navigate('/')
     } catch (error) {

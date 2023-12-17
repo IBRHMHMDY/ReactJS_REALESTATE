@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/storage'
 import {app} from '../firebase.js'
+import {Link} from 'react-router-dom'
 import { updateUserStart,updateUserSuccess,updateUserFailure,
    deleteUserStart,deleteUserSuccess,deleteUserFailure, 
    signOutStart,signOutSuccess,signOutFailure } from "../redux/user/userSlice.js"
@@ -163,6 +164,11 @@ export default function Profile() {
           className='text-white bg-slate-700 p-3 rounded-lg hover:opacity-95 disabled:opacity-80 uppercase'>
           {loading ? 'Loading..' : 'Update'}
         </button>
+        <Link to="/create-listing"
+          className="bg-green-700 rounded-lg p-3 uppercase text-white text-center hover:opacity-95">
+            Create Listing
+        </Link>
+
       </form>
       <div className="flex justify-between items-center">
         <button onClick={handleDeleteUser} className="text-red-700 font-semibold p-3 mt-3">Delete Account</button>

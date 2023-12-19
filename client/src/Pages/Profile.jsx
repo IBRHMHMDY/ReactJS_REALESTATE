@@ -1,12 +1,11 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
-import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/storage'
+import {getDownloadURL, getStorage, list, ref, uploadBytesResumable} from 'firebase/storage'
 import {app} from '../firebase.js'
 import {Link} from 'react-router-dom'
 import { updateUserStart,updateUserSuccess,updateUserFailure,
    deleteUserStart,deleteUserSuccess,deleteUserFailure, 
    signOutStart,signOutSuccess,signOutFailure } from "../redux/user/userSlice.js"
-
 
 export default function Profile() {
   const {currentUser, loading, error} = useSelector((state)=> state.user)
@@ -17,19 +16,15 @@ export default function Profile() {
   const [uploadFileError, setUploadFileError] = useState(false)
   const [formData, setFormData] = useState({})
   const [success, setSuccess] = useState(false)
+  const [showListingError, setShowListingError] = useState(false)
+  const [userListings,setUserListings] = useState([])
 
   useEffect(()=>{
     if(imageFile){
-      // console.log(imageFile);
       handleUploadFile(imageFile)
     }
   }, [imageFile])
-  
-  // Firebase Storage
-  // allow read;
-  // allow write: if
-  // request.resource.size < 2 * 1024 * 1024 &&
-  // request.resource.contentType.matches('image/.*')
+
   const handleUploadFile = (image)=>{
     const storage = getStorage(app)
     const fileName = new Date().getTime() + image.name;
@@ -111,7 +106,20 @@ export default function Profile() {
       dispatch(deleteUserFailure(error.message))
     }
   }
-
+  const handleShowListings = async()=>{
+    try {
+      setShowListingError(false)
+      const res = await fetch(`/api/user/listings/${currentUser._id}`)
+      const data = await res.json();
+      if(data.success === false){
+        setShowListingError(true)
+        return;
+      }
+      setUserListings(data)
+    } catch (error) {
+      setShowListingError(true)
+    }
+  }
   return (
     <div className='max-w-lg mx-auto p-3'>
       <h1 className='text-3xl text-center font-semibold my-7'>Profile</h1>
@@ -168,7 +176,6 @@ export default function Profile() {
           className="bg-green-700 rounded-lg p-3 uppercase text-white text-center hover:opacity-95">
             Create Listing
         </Link>
-
       </form>
       <div className="flex justify-between items-center">
         <button onClick={handleDeleteUser} className="text-red-700 font-semibold p-3 mt-3">Delete Account</button>
@@ -176,6 +183,25 @@ export default function Profile() {
       </div>
       {error ? (<p className="bg-red-100 rounded-lg border border-red-700 font-semibold py-3 mt-5 text-red-900 text-center">{error}</p>) : ''}
       {success ? (<p className="bg-green-100 rounded-lg border border-green-700 font-semibold py-3 mt-5 text-green-900 text-center">'User is Updated Successfully'</p>) : ''}
+      <hr />
+      <button onClick={handleShowListings} className="text-red-700 w-full font-semibold my-5">{userListings ? 'Show Listings' : ''}</button>
+      <p>{showListingError? 'Error Showing Listings' : ''}</p>
+      
+      <h1 className="text-2xl mt-7 text-center font-semibold">Your Listings</h1>
+      {userListings && userListings.length > 0 && userListings.map((listing) =>
+        <div key={listing._id} className='border rounded-lg p-3 my-3 flex justify-between items-center gap-4'>
+          <Link to={`/listing/${listing._id}`}>
+            <img src={listing.imageUrls[0]} alt="image Listing Cover" className="w-16 h-16 object-contain rounded-lg"/>
+          </Link>
+          <Link to={`/listing/${listing._id}`} className="flex-1 ">
+            <p className="text-slate-700 font-semibold hover:underline truncate">{listing.name}</p>
+          </Link>
+          <div className="flex flex-col items-center">
+            <button type="button" className="text-green-700 font-semibold p-2 my-1 uppercase">Edit</button>
+            <button type="button" className="text-red-700 font-semibold p-2 my-1 uppercase">Delete</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

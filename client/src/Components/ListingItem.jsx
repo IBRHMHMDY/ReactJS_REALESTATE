@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom'
 import {FaBath, FaBed, FaLocationDot} from 'react-icons/fa6'
 export default function ListingItem({listing}) {
   return (
-    <div className='mt-5 max-w-[350px] bg-white rounded-lg overflow-hidden'>
-        <Link to={`/listing/${listing._id}`} >
+    <div className='bg-white shadow-md hover:shadow-lg transition-shadow overflow-hidden rounded-lg sm:w-[330px] lg:w-2/1'>
+        <Link to={`/listing/${listing._id}`}>
             <img src={listing.imageUrls[0]} alt="Image Cover" 
-            className='h-[320px] sm:h-[220px] w-full object-cover transition-scale hover:scale-105 duration-300'  />
+            className='w-full h-[320px] sm:h-[220px] object-cover transition-scale hover:scale-105 duration-300'  />
             <div className="p-3 ">
                 <p className='text-xl font-semibold p-3 '>{listing.name}</p>
                 <p className='text-xl font-semibold p-3 flex items-center gap-3'>

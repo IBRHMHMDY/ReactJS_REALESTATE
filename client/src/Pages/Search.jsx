@@ -6,6 +6,7 @@ export default function Search() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [listings, setListings] = useState([])
+    const [showMore, setShowMore] = useState(false)
     const [searchData, setSearchData] = useState({
         searchTerm : '',
         type: 'all',
@@ -15,8 +16,7 @@ export default function Search() {
         sort: 'created_at',
         order: 'desc',
     });
-    
-    console.log(listings);
+
     useEffect(()=>{
         const urlParams = new URLSearchParams(location.search);
         const searchTermFromURL = urlParams.get('searchTerm');
@@ -40,11 +40,17 @@ export default function Search() {
         }
 
         const fetchListings = async()=>{
+            setShowMore(false)
             setLoading(true);
             const searchQuery = urlParams.toString();
             const res = await fetch(`/api/listing/get?${searchQuery}`);
             const data = await res.json();
             setListings(data)
+            if(data.length > 6){
+                setShowMore(true)
+            }else{
+                setShowMore(false)
+            }
             setLoading(false)
         }
         fetchListings();
@@ -87,9 +93,22 @@ export default function Search() {
         const searchQuery = urlParams.toString();
         navigate(`/search?${searchQuery}`)
     }
+    const showMoreClick = async()=>{
+        const numberOfListings = listings.length;
+        const startIndex = numberOfListings;
+        const urlParams = new URLSearchParams(location.search);
+        urlParams.set('startIndex', startIndex);
+        const searchQuery = urlParams.toString();
+        const res = await fetch(`/api/listing/get?${searchQuery}`);
+        const data = await res.json();
+        if(data.length < 8){
+            setShowMore(false)
+        }
+        setListings([...listings, ...data]);
+    }
   return (
     <div className='flex flex-col md:flex-row gap-4'>
-        <div className="border-b-2 md:border-r-2 md:min-h-screen p-6">
+        <div className="border-b-2 md:border-r-2 md:min-h-screen md:w-2/5 p-6">
             <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
                 <div className='flex gap-2 items-center'>
                     <label className='whitespace-nowrap font-semibold'>Search Term: </label>
@@ -163,7 +182,7 @@ export default function Search() {
         </div>
         <div className='text-3xl text-slate-700 font-semibold p-3 border-b'>
             <h1>Listing Results</h1>
-            <div className="flex flex-wrap w-full">
+            <div className="flex flex-wrap gap-4 p-7 m-auto">
             {!loading && listings.length === 0 && (
                 <p className='text-slate-700 text-xl text-center w-full m-auto p-7'>No Listing Found</p>
             )}
@@ -178,7 +197,11 @@ export default function Search() {
                     ))
                 )
             }
-
+            {
+                showMore && (
+                    <button onClick={showMoreClick} className='text-red-700 underline cursor-pointer py-4 text-center w-full text-xl'>Show More</button>
+                )
+            }
             </div>
         </div>
     </div>

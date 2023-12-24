@@ -21,6 +21,7 @@ export default function Header() {
         const SearchTermFromUrl = urlParams.get('searchTerm');
         if(SearchTermFromUrl) setSearchTerm(SearchTermFromUrl)
     }, [location.search]);
+
   return (
     <header className='bg-slate-200 shadow-md'>
         <div className="flex justify-between items-center mx-auto p-3 max-w-6xl">

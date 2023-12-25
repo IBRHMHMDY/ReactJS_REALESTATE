@@ -17,8 +17,6 @@ export default function Listing() {
     const {currentUser} = useSelector((state) => state.user)
     const [contact, setContact] = useState(false)
 
-    console.log(currentUser._id, listing?.userRef);
-
     useEffect(()=>{
         const fetchListings = async()=>{
             try {

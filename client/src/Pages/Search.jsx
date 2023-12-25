@@ -101,14 +101,14 @@ export default function Search() {
         const searchQuery = urlParams.toString();
         const res = await fetch(`/api/listing/get?${searchQuery}`);
         const data = await res.json();
-        if(data.length < 8){
+        if(data.length < 7){
             setShowMore(false)
         }
         setListings([...listings, ...data]);
     }
   return (
     <div className='flex flex-col md:flex-row gap-4'>
-        <div className="border-b-2 md:border-r-2 md:min-h-screen md:w-2/5 p-6">
+        <div className="border-b-2 md:border-r-2 md:min-h-screen md:max-w-[400px] md:min-w-[400px] p-6">
             <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
                 <div className='flex gap-2 items-center'>
                     <label className='whitespace-nowrap font-semibold'>Search Term: </label>

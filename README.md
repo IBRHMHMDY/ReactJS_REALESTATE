@@ -1,15 +1,12 @@
 # ReactJS_REALESTATE
 REALESTATE [MERN Stack + TailwindCSS + Redux Toolkit + JWT]
 # Technologies
-- MongoDB atlas
-- NodeJS 
-- ReactJS
-- ExpressJS
-- Json Web Token [JWT]
+- MERN = [MongoDb + Express + ReactJS + NodeJS]
+- JWT = [Json Web Token]
 - Redux Toolkit
-- Firebase OAuth Google
+- Firebase OAuth Google = [Sign in By Google]
 - Tailwind CSS
-- CRUD
+- CRUD = [Create + Read + Update + Delete]
 # Extension VS Code
 - Auto Rename Tag
 - Es7 + react/redux snippets

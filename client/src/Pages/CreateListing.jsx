@@ -3,6 +3,7 @@ import { useState } from "react"
 import { app } from "../firebase"
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+
 export default function CreateListing() {
   const {currentUser} = useSelector(state => state.user)
   const [files, setFiles] = useState([])
@@ -126,6 +127,7 @@ export default function CreateListing() {
   }
 
   return (
+
     <main className="mx-auto max-w-4xl my-3">
       <h1 className="text-center font-semibold p-3 text-4xl my-7">Create a Listing</h1>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
@@ -228,5 +230,6 @@ export default function CreateListing() {
         </div>
       </form>
     </main>
+
   )
 }

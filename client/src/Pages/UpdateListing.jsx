@@ -144,6 +144,7 @@ export default function UpdateListing() {
   }
 
   return (
+
     <main className="mx-auto max-w-4xl my-3">
       <h1 className="text-center font-semibold p-3 text-4xl my-7">Update a Listing</h1>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
@@ -246,5 +247,6 @@ export default function UpdateListing() {
         </div>
       </form>
     </main>
+
   )
 }

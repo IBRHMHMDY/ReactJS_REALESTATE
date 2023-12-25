@@ -5,6 +5,7 @@ import SwiperCore from 'swiper';
 import { Navigation} from 'swiper/modules';
 import 'swiper/css/bundle';
 import ListingItem from '../Components/ListingItem';
+import Footer from '../Components/Footer';
 
 export default function Home() {
   SwiperCore.use([Navigation])
@@ -49,6 +50,7 @@ export default function Home() {
 
 
   return (
+    <>
     <div>
       {/* Top */}
       <div className='flex flex-col gap-8 p-16 max-w-6xl mx-auto'>
@@ -126,5 +128,7 @@ export default function Home() {
         <Link className='text-lg text-slate-400 hover:text-slate-700 mt-3 mx-auto w-full text-center' to={`/search?type=sale`} >Show More Sale</Link>
       </div>
     </div>
+    <Footer />
+    </>
   )
 }

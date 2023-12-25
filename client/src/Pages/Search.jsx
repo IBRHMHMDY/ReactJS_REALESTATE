@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ListingItem from '../Components/ListingItem';
+import Footer from '../Components/Footer';
 
 export default function Search() {
     const navigate = useNavigate();
@@ -107,103 +108,106 @@ export default function Search() {
         setListings([...listings, ...data]);
     }
   return (
-    <div className='flex flex-col md:flex-row gap-4'>
-        <div className="border-b-2 md:border-r-2 md:min-h-screen md:max-w-[400px] md:min-w-[400px] p-6">
-            <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
-                <div className='flex gap-2 items-center'>
-                    <label className='whitespace-nowrap font-semibold'>Search Term: </label>
-                    <input type="search" id="searchTerm"
-                    placeholder='Search...'
-                    className='border rounded-lg p-3 w-full'
-                    value={searchData.searchTerm} 
-                    onChange={handleChange}/>
-                </div>
-                <div className="flex gap-2 items-center flex-wrap">
-                    <label className='font-semibold'>Type: </label>
-                    <div className="flex gap-2">
-                        <input type="checkbox" id="all"
-                        className='w-5'
-                        value={searchData.type || 'all'}
-                        onChange={handleChange} />
-                        <span>All</span>
-                    </div>
-                    <div className="flex gap-2">
-                        <input type="checkbox" id="rent"
-                        className='w-5'
-                        value={searchData.type === 'rent'}
-                        onChange={handleChange} />
-                        <span>Rent</span>
-                    </div>
-                    <div className="flex gap-2">
-                        <input type="checkbox" id="sale"
-                        className='w-5'
-                        value={searchData.type === 'sale'}
-                        onChange={handleChange} />
-                        <span>Sale</span>
-                    </div>
-                    <div className="flex gap-2">
-                        <input type="checkbox" id="offer"
-                        className='w-5' 
-                        value={searchData.offer}
+    <>
+        <div className='flex flex-col md:flex-row gap-4'>
+            <div className="border-b-2 md:border-r-2 md:min-h-screen md:max-w-[400px] md:min-w-[400px] p-6">
+                <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
+                    <div className='flex gap-2 items-center'>
+                        <label className='whitespace-nowrap font-semibold'>Search Term: </label>
+                        <input type="search" id="searchTerm"
+                        placeholder='Search...'
+                        className='border rounded-lg p-3 w-full'
+                        value={searchData.searchTerm} 
                         onChange={handleChange}/>
-                        <span>Offer</span>
                     </div>
-                </div>
-                <div className='flex gap-2 items-center flex-wrap'>
-                    <label className='font-semibold'>Amenities: </label>
-                    <div className="flex gap-2">
-                        <input type="checkbox" id="parking"
-                        className='w-5' 
-                        value={searchData.parking}
-                        onChange={handleChange}/>
-                        <span>Parking</span>
+                    <div className="flex gap-2 items-center flex-wrap">
+                        <label className='font-semibold'>Type: </label>
+                        <div className="flex gap-2">
+                            <input type="checkbox" id="all"
+                            className='w-5'
+                            value={searchData.type || 'all'}
+                            onChange={handleChange} />
+                            <span>All</span>
+                        </div>
+                        <div className="flex gap-2">
+                            <input type="checkbox" id="rent"
+                            className='w-5'
+                            value={searchData.type === 'rent'}
+                            onChange={handleChange} />
+                            <span>Rent</span>
+                        </div>
+                        <div className="flex gap-2">
+                            <input type="checkbox" id="sale"
+                            className='w-5'
+                            value={searchData.type === 'sale'}
+                            onChange={handleChange} />
+                            <span>Sale</span>
+                        </div>
+                        <div className="flex gap-2">
+                            <input type="checkbox" id="offer"
+                            className='w-5' 
+                            value={searchData.offer}
+                            onChange={handleChange}/>
+                            <span>Offer</span>
+                        </div>
                     </div>
-                    <div className="flex gap-2">
-                        <input type="checkbox" id="furnished"
-                        className='w-5'
-                        value={searchData.furnished}
-                        onChange={handleChange} />
-                        <span>Furnished</span>
+                    <div className='flex gap-2 items-center flex-wrap'>
+                        <label className='font-semibold'>Amenities: </label>
+                        <div className="flex gap-2">
+                            <input type="checkbox" id="parking"
+                            className='w-5' 
+                            value={searchData.parking}
+                            onChange={handleChange}/>
+                            <span>Parking</span>
+                        </div>
+                        <div className="flex gap-2">
+                            <input type="checkbox" id="furnished"
+                            className='w-5'
+                            value={searchData.furnished}
+                            onChange={handleChange} />
+                            <span>Furnished</span>
+                        </div>
                     </div>
+                    <div className='flex gap-2 items-center flex-wrap'>
+                        <label className='font-semibold'>Sort : </label>
+                        <select id="sort_order" className='p-3 rounded-lg'
+                        defaultValue={'createdAt_desc'}
+                        onChange={handleChange}>
+                            <option value="regularPrice_desc">Price Low to High</option>
+                            <option value="regularPrice_asc">Price Hight to Low</option>
+                            <option value="createdAt_desc">Latest</option>
+                            <option value="createdAt_asc">Oldest</option>
+                        </select>
+                    </div>
+                    <button className='w-full rounded-lg bg-slate-700 text-white uppercase hover:opacity-95 disabled:opacity-80 p-3'>Search</button>
+                </form>
+            </div>
+            <div className='text-3xl text-slate-700 font-semibold p-3 border-b'>
+                <h1>Listing Results</h1>
+                <div className="flex flex-wrap gap-4 p-7 m-auto">
+                {!loading && listings.length === 0 && (
+                    <p className='text-slate-700 text-xl text-center w-full m-auto p-7'>No Listing Found</p>
+                )}
+                {
+                    loading && (
+                        <p className='w-full text-slate-700 text-center p-7 text-2xl'>Loading...</p>
+                    )
+                }{
+                    !loading && listings && (
+                        listings.map((listing)=> (
+                            <ListingItem key={listings._id} listing={listing} />
+                        ))
+                    )
+                }
+                {
+                    showMore && (
+                        <button onClick={showMoreClick} className='text-red-700 underline cursor-pointer py-4 text-center w-full text-xl'>Show More</button>
+                    )
+                }
                 </div>
-                <div className='flex gap-2 items-center flex-wrap'>
-                    <label className='font-semibold'>Sort : </label>
-                    <select id="sort_order" className='p-3 rounded-lg'
-                    defaultValue={'createdAt_desc'}
-                    onChange={handleChange}>
-                        <option value="regularPrice_desc">Price Low to High</option>
-                        <option value="regularPrice_asc">Price Hight to Low</option>
-                        <option value="createdAt_desc">Latest</option>
-                        <option value="createdAt_asc">Oldest</option>
-                    </select>
-                </div>
-                <button className='w-full rounded-lg bg-slate-700 text-white uppercase hover:opacity-95 disabled:opacity-80 p-3'>Search</button>
-            </form>
-        </div>
-        <div className='text-3xl text-slate-700 font-semibold p-3 border-b'>
-            <h1>Listing Results</h1>
-            <div className="flex flex-wrap gap-4 p-7 m-auto">
-            {!loading && listings.length === 0 && (
-                <p className='text-slate-700 text-xl text-center w-full m-auto p-7'>No Listing Found</p>
-            )}
-            {
-                loading && (
-                    <p className='w-full text-slate-700 text-center p-7 text-2xl'>Loading...</p>
-                )
-            }{
-                !loading && listings && (
-                    listings.map((listing)=> (
-                        <ListingItem key={listings._id} listing={listing} />
-                    ))
-                )
-            }
-            {
-                showMore && (
-                    <button onClick={showMoreClick} className='text-red-700 underline cursor-pointer py-4 text-center w-full text-xl'>Show More</button>
-                )
-            }
             </div>
         </div>
-    </div>
+        <Footer/>
+    </>
   )
 }

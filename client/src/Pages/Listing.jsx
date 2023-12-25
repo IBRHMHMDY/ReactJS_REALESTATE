@@ -7,6 +7,7 @@ import 'swiper/css/bundle';
 import { FaBath, FaBed, FaChair, FaLocationDot, FaP, FaRegCopy, FaSquareParking } from "react-icons/fa6";
 import { useSelector } from 'react-redux'
 import Contact from '../Components/Contact';
+import Footer from '../Components/Footer';
 
 export default function Listing() {
     SwiperCore.use([Navigation])
@@ -40,6 +41,7 @@ export default function Listing() {
 
 
     return (
+        <>
         <main>
             {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
             {error && <p className='text-center my-7 text-2xl text-red-700 font-semibold'>Something went Wrong!</p>}
@@ -105,5 +107,7 @@ export default function Listing() {
                 </div>
             )}
         </main>
+        <Footer />
+        </>
     ) 
 }

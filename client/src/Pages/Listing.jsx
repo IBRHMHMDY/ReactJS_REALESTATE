@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore from 'swiper';
 import { Navigation} from 'swiper/modules';
 import 'swiper/css/bundle';
-import { FaBath, FaBed, FaChair, FaLocationDot, FaP, FaRegCopy, FaSquareParking } from "react-icons/fa6";
+import { FaBath, FaBed, FaChair, FaCheckDouble, FaLocationDot, FaP, FaRegCopy, FaSquareParking } from "react-icons/fa6";
 import { useSelector } from 'react-redux'
 import Contact from '../Components/Contact';
 import Footer from '../Components/Footer';
@@ -17,7 +17,8 @@ export default function Listing() {
     const params = useParams()
     const {currentUser} = useSelector((state) => state.user)
     const [contact, setContact] = useState(false)
-
+    const [copySuccess, setCopySuccess] = useState(false)
+    
     useEffect(()=>{
         const fetchListings = async()=>{
             try {
@@ -39,7 +40,12 @@ export default function Listing() {
         fetchListings()
     }, [params.listingId])
 
-
+    const copyUrl = async()=>{
+        setCopySuccess(false)
+        const url = location.href;
+        await navigator.clipboard.writeText(url);
+        setCopySuccess(true);
+    }
     return (
         <>
         <main>
@@ -47,8 +53,10 @@ export default function Listing() {
             {error && <p className='text-center my-7 text-2xl text-red-700 font-semibold'>Something went Wrong!</p>}
             {listing && !loading && !error && (
                 <div>
-                    <span className='fixed top-[10%] right-[2%] z-10 rounded-full bg-slate-600 cursor-pointer text-4xl p-4'>
-                        <FaRegCopy color='white'/>
+                    <span onClick={copyUrl} className='fixed top-[10%] right-[2%] z-10 rounded-full bg-slate-600 cursor-pointer text-4xl p-4'>
+                        {copySuccess ? <FaCheckDouble color='white' /> : <FaRegCopy color='white'/>}
+                        
+                        
                     </span>
                     <Swiper className='relative' navigation>
                         {listing.imageUrls.map((url)=> (
